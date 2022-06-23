@@ -31,10 +31,10 @@
 
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown mx-sm-0 mx-md-3">
-                    <a class="navbar-btn btn btn-sm btn-primary lift ms-auto" data-bs-toggle="modal" href="<?=base_url("/")?>#modal-daftar">Daftar</a>
+                    <button class="navbar-btn btn btn-sm btn-primary lift ms-auto" data-bs-toggle="modal" data-bs-target="#modal-daftar">Daftar</button>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="navbar-btn btn btn-sm btn-primary-soft lift ms-auto" data-bs-toggle="modal" href="<?=base_url("/")?>#modal-masuk">Masuk</a>
+                    <button class="navbar-btn btn btn-sm btn-primary-soft lift ms-auto" data-bs-toggle="modal" data-bs-target="#modal-masuk">Masuk</button>
                 </li>
             </ul>
         </div>
