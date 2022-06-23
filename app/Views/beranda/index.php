@@ -6,7 +6,52 @@ Beranda
 
 <?= $this->section("konten") ?>
 
-<section class="pt-4 pt-md-11">
+<section class="pt-8 pb-11 pt-md-9 pb-md-12 bg-gray-200 bg-between" style="background-image: url(core/assets/img/illustrations/illustration-6-cropped.png), url(core/assets/img/illustrations/illustration-4-cropped.png);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-7 text-center" data-aos="fade-up">
+                <!-- Image (mobile) -->
+                <img src="<?= base_url("core/assets/img/illustrations/illustration-8.png") ?>" alt="..." class="img-fluid mb-6 d-lg-none">
+
+                <h1 class="display-4 fw-bold">
+                    Ringkaskan Tautanmu
+                </h1>
+
+                <p class="fs-lg text-muted mb-6 mb-md-8">
+                    Lupakan tautan panjang, bertele-tele, dan sulit diingat.
+                </p>
+
+                <form action="<?= base_url("/ringkas")?>" method="post">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group form-floating">
+                                <input type="text" class="form-control" id="panjang" name="panjang" placeholder="Masukkan Tautan Panjang">
+                                <label for="panjang">Masukkan Tautan Panjang</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <div class="input-group-text fw-bolder">tekan.id/</div>
+                                <input type="text" class="form-control" id="pendek" name="pendek" placeholder="custom-link">
+                                <button type="submit" class="btn btn-primary btn-sm">Ringkas</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="position-relative">
+    <div class="shape shape-bottom shape-fluid-x text-white">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 48h2880V0h-720C1442.5 52 720 0 720 0H0v48z" fill="currentColor"/></svg>
+    </div>
+</div>
+
+<section class="pt-4 pt-md-8">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-12 col-md-5 col-lg-6 order-md-2">

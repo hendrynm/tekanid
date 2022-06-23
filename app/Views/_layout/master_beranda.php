@@ -70,5 +70,7 @@
 
 <script src="<?= base_url("core/assets/js/vendor.bundle.js") ?>"></script>
 <script src="<?= base_url("core/assets/js/theme.bundle.js") ?>"></script>
+
+<?= $this->renderSection("js") ?>
 </body>
 </html>

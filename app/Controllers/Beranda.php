@@ -10,4 +10,24 @@ class Beranda extends BaseController
     {
         return view("beranda/index");
     }
+
+    public function produk()
+    {
+        return view("beranda/produk");
+    }
+
+    public function biaya()
+    {
+        return view("beranda/biaya");
+    }
+
+    public function testimoni()
+    {
+        return view("beranda/testimoni");
+    }
+
+    public function kontak()
+    {
+        return view("beranda/kontak");
+    }
 }
