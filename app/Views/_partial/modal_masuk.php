@@ -12,7 +12,7 @@
                             </h2>
 
                             <p class="mb-6 text-center text-muted">
-                                Masukkan kredensial akun yang telah termasuk
+                                Masukkan kredensial akun yang telah terdaftar
                             </p>
 
                             <form class="mb-6" id="form-modal-masuk" method="post" action="<?= base_url("/masuk") ?>">
