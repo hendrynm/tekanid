@@ -6,13 +6,12 @@ Beranda
 
 <?= $this->section("konten") ?>
 
-<section class="pt-8 pb-11 pt-md-9 pb-md-12 bg-gray-200 bg-between" style="background-image: url(core/assets/img/illustrations/illustration-6-cropped.png), url(core/assets/img/illustrations/illustration-4-cropped.png);">
+<section class="pt-8 pb-11 pt-md-9 pb-md-12 bg-gray-200 bg-between" style="background-image:
+        url(<?= base_url('core/assets/img/illustrations/illustration-6-cropped.png') ?>),
+        url(<?= base_url('core/assets/img/illustrations/illustration-4-cropped.png') ?>);">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-7 text-center" data-aos="fade-up">
-                <!-- Image (mobile) -->
-                <img src="<?= base_url("core/assets/img/illustrations/illustration-8.png") ?>" alt="..." class="img-fluid mb-6 d-lg-none">
-
                 <h1 class="display-4 fw-bold">
                     Ringkaskan Tautanmu
                 </h1>
@@ -51,8 +50,15 @@ Beranda
     </div>
 </div>
 
-<section class="pt-4 pt-md-8">
+<section class="pt-4 pt-md-8" id="rencana">
     <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="#rencana" class="btn btn-primary btn-rounded-circle shadow mt-n10 mt-md-n12" data-scroll>
+                    <i class="fe fe-arrow-down"></i>
+                </a>
+            </div>
+        </div>
         <div class="row align-items-center">
             <div class="col-12 col-md-5 col-lg-6 order-md-2">
                 <img src="<?= base_url("img/beranda1-min.jpg") ?>" class="img-fluid mw-md-110 mb-6 mb-md-0" alt="ilustrasi" data-aos="fade-up" data-aos-delay="100">
