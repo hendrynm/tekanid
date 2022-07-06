@@ -114,7 +114,7 @@ Biaya
 
                         <div class="d-flex justify-content-center">
                             <span class="h2 mb-0 mt-2">Rp</span>
-                            <span class="price display-2 mb-0">4.900</span>
+                            <span class="price display-2 mb-0">3.900</span>
                         </div>
 
                         <p class="text-center text-muted mb-5">

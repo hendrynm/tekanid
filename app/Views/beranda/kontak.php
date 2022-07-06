@@ -35,29 +35,23 @@ Kontak
         <div class="row">
             <div class="col-12 col-md-4 text-center border-end border-gray-300">
                 <h6 class="text-uppercase text-gray-700 mb-1">
-                    Kirim pesan
+                    LINE
                 </h6>
 
                 <div class="mb-5 mb-md-0">
                     <a href="https://line.me/ti/p/~hendry.naufal" target="_blank" class="h4 text-primary">
-                        LINE
-                    </a>
-                </div>
-
-                <div class="mb-5 mb-md-0">
-                    <a href="https://wa.me/6285331303015" target="_blank" class="h4 text-primary">
-                        WhatsApp
+                        hendry.naufal
                     </a>
                 </div>
             </div>
 
             <div class="col-12 col-md-4 text-center border-end border-gray-300">
                 <h6 class="text-uppercase text-gray-700 mb-1">
-                    Telepon
+                    Telepon / WhatsApp
                 </h6>
 
                 <div class="mb-5 mb-md-0">
-                    <a href="#" class="h4">
+                    <a href="https://wa.me/6285331303015" class="h4">
                         (+62) 853 3130 3015
                     </a>
                 </div>
@@ -69,7 +63,7 @@ Kontak
                 </h6>
 
                 <a href="#" class="h4">
-                    dukungan@tekan.id
+                    cs@tekan.id
                 </a>
             </div>
         </div>

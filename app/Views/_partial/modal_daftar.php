@@ -17,6 +17,13 @@
 
                             <form class="mb-6" id="form-modal-daftar" method="post" action="<?= base_url("/daftar") ?>">
                                 <div class="form-group">
+                                    <label class="visually-hidden" for="modal-daftar-nama">
+                                        Nama
+                                    </label>
+                                    <input type="text" class="form-control" name="nama" id="modal-daftar-nama" placeholder="Masukkan namamu">
+                                </div>
+
+                                <div class="form-group">
                                     <label class="visually-hidden" for="modal-daftar-posel">
                                         Alamat Posel
                                     </label>

@@ -16,27 +16,39 @@
 
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="<?= base_url("/produk") ?>" aria-haspopup="true" aria-expanded="false">Produk</a>
+                    <a class="nav-link <?= ((current_url(true)->getSegment(2)) === "produk") ? "active fw-bolder" : "" ?>"
+                       href="<?= base_url("/produk") ?>">Produk</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="<?= base_url("/biaya") ?>" aria-haspopup="true" aria-expanded="false">Biaya</a>
+                    <a class="nav-link <?= ((current_url(true)->getSegment(2)) === "biaya") ? "active fw-bolder" : "" ?>"
+                       href="<?= base_url("/biaya") ?>">Biaya</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="<?= base_url("/testimoni") ?>" aria-haspopup="true" aria-expanded="false">Testimoni</a>
+                    <a class="nav-link <?= ((current_url(true)->getSegment(2)) === "testimoni") ? "active fw-bolder" : "" ?>"
+                       href="<?= base_url("/testimoni") ?>">Testimoni</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="<?= base_url("/kontak") ?>" aria-haspopup="true" aria-expanded="false">Kontak</a>
+                    <a class="nav-link <?= ((current_url(true)->getSegment(2)) === "kontak") ? "active fw-bolder" : "" ?>"
+                       href="<?= base_url("/kontak") ?>">Kontak</a>
                 </li>
             </ul>
 
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown mx-sm-0 mx-md-3">
-                    <button class="navbar-btn btn btn-sm btn-primary lift ms-auto" data-bs-toggle="modal" data-bs-target="#modal-daftar">Daftar</button>
-                </li>
-                <li class="nav-item dropdown">
-                    <button class="navbar-btn btn btn-sm btn-primary-soft lift ms-auto" data-bs-toggle="modal" data-bs-target="#modal-masuk">Masuk</button>
-                </li>
-            </ul>
+            <?php if(session()->has("id_pengguna")): ?>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown mx-sm-0 mx-md-3">
+                        <a class="navbar-btn btn btn-sm btn-danger lift ms-auto" href="<?= base_url("/keluar") ?>">Keluar</a>
+                    </li>
+                </ul>
+            <?php else: ?>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown mx-sm-0 mx-md-3">
+                        <button class="navbar-btn btn btn-sm btn-primary lift ms-auto" data-bs-toggle="modal" data-bs-target="#modal-daftar">Daftar</button>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <button class="navbar-btn btn btn-sm btn-primary-soft lift ms-auto" data-bs-toggle="modal" data-bs-target="#modal-masuk">Masuk</button>
+                    </li>
+                </ul>
+            <?php endif; ?>
         </div>
     </div>
 </nav>

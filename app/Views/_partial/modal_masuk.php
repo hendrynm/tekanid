@@ -32,6 +32,10 @@
 
                                 <button class="btn w-100 btn-primary" type="submit">Masuk <i class="fe fe-arrow-right d-none d-md-inline ms-3"></i></button>
                             </form>
+
+                            <p class="mb-0 fs-sm text-center text-muted">
+                                Belum memiliki akun terdaftar? <a href="#" data-bs-toggle="modal" data-bs-target="#modal-daftar">Daftar</a>.
+                            </p>
                         </div>
                     </div>
                 </div>
