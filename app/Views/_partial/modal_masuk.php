@@ -20,14 +20,14 @@
                                     <label class="visually-hidden" for="modal-masuk-posel">
                                         Alamat Posel
                                     </label>
-                                    <input type="email" class="form-control" name="posel" id="modal-masuk-posel" placeholder="Masukkan alamat poselmu">
+                                    <input type="email" class="form-control" name="posel" id="modal-masuk-posel" placeholder="Masukkan alamat poselmu" required>
                                 </div>
 
                                 <div class="form-group mb-5">
                                     <label class="visually-hidden" for="modal-masuk-sandi">
                                         Kata Sandi
                                     </label>
-                                    <input type="password" class="form-control" name= "password" id="modal-masuk-sandi" placeholder="Buatlah kata sandi">
+                                    <input type="password" class="form-control" name= "password" id="modal-masuk-sandi" placeholder="Buatlah kata sandi" required>
                                 </div>
 
                                 <button class="btn w-100 btn-primary" type="submit">Masuk <i class="fe fe-arrow-right d-none d-md-inline ms-3"></i></button>

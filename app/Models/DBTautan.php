@@ -14,5 +14,6 @@ class DBTautan extends Model
         "panjang",
         "pendek",
         "id_pengguna",
+        "waktu",
     ];
 }

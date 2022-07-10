@@ -36,6 +36,9 @@
             <?php if(session()->has("id_pengguna")): ?>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown mx-sm-0 mx-md-3">
+                        <a class="navbar-btn btn btn-sm btn-primary lift ms-auto" href="<?= base_url("/admin/beranda") ?>">Kelola Akun</a>
+                    </li>
+                    <li class="nav-item dropdown mx-sm-0 mx-md-3">
                         <a class="navbar-btn btn btn-sm btn-danger lift ms-auto" href="<?= base_url("/keluar") ?>">Keluar</a>
                     </li>
                 </ul>

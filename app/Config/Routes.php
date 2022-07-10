@@ -35,17 +35,31 @@ $routes->set404Override(function(){ return view("errors/404"); });
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get("/",           "Beranda::index");
-$routes->get("/produk",     "Beranda::produk");
-$routes->get("/biaya",      "Beranda::biaya");
-$routes->get("/testimoni",  "Beranda::testimoni");
-$routes->get("/kontak",     "Beranda::kontak");
+$routes->group("/", function ($routes)
+{
+    $routes->get("",                "Beranda::index");
+    $routes->get("produk",          "Beranda::produk");
+    $routes->get("biaya",           "Beranda::biaya");
+    $routes->get("testimoni",       "Beranda::testimoni");
+    $routes->get("kontak",          "Beranda::kontak");
 
-$routes->post("/daftar",    "Auth::daftar");
-$routes->post("/masuk",     "Auth::masuk");
-$routes->get("/keluar",     "Auth::keluar");
+    $routes->post("daftar",         "Auth::daftar");
+    $routes->post("masuk",          "Auth::masuk");
+    $routes->get("keluar",          "Auth::keluar");
 
-$routes->post("/ringkas",    "Tautan::ringkas");
+    $routes->post("ringkas",        "Tautan::ringkas");
+    $routes->get("/(:segment)",      "Tautan::alih/$1");
+});
+
+$routes->group("admin", ["filter" => "auth"], function ($routes)
+{
+    $routes->get("beranda",         "Admin::beranda");
+
+    $routes->group("tautan", function ($routes)
+    {
+        $routes->get("dasbor",      "Admin::tautan_dasbor");
+    });
+});
 
 /*
  * --------------------------------------------------------------------

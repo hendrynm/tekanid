@@ -14,18 +14,23 @@ class Auth extends BaseController
 
         if(!$this->cek_ganda($data->posel))
         {
-            $pengguna = new DBPengguna();
-            $query1 = $pengguna->insert([
-                "nama" => $data->nama,
-                "posel" => $data->posel,
-                "password" => password_hash($data->password,PASSWORD_DEFAULT),
-            ]);
+            if($data->password === $data->password2)
+            {
+                $pengguna = new DBPengguna();
+                $query1 = $pengguna->insert([
+                    "nama" => $data->nama,
+                    "posel" => $data->posel,
+                    "password" => password_hash($data->password,PASSWORD_DEFAULT),
+                ]);
 
-            return ($query1 > 0) ?
-                redirect()->to(base_url("/"))
-                    ->with("sukses","Pendaftaran akun <b>" . $data->nama . " </b> telah berhasil. Silakan melakukan login.") :
-                redirect()->to(base_url("/"))
-                    ->with("gagal","Pendaftaran akun <b>" . $data->nama . " </b> tidak berhasil. Silakan coba beberapa saat lagi.");
+                return ($query1 > 0) ?
+                    redirect()->to(base_url("/"))
+                        ->with("sukses","Pendaftaran akun <b>" . $data->nama . " </b> telah berhasil. Silakan melakukan login.") :
+                    redirect()->to(base_url("/"))
+                        ->with("gagal","Pendaftaran akun <b>" . $data->nama . " </b> tidak berhasil. Silakan coba beberapa saat lagi.");
+            }
+            return redirect()->to(base_url("/"))
+                ->with("gagal","Kombinasi kata sandi <b>tidak sama</b>. Silakan lakukan pendaftaran ulang.");
         }
         return redirect()->to(base_url("/"))
             ->with("gagal","Akun <b>" . $data->posel . "</b> sudah pernah didaftarkan. Silakan melakukan login.");
@@ -63,10 +68,11 @@ class Auth extends BaseController
 
     public function ambil_form(): object
     {
-        $data           = new stdClass();
-        $data->nama     = $this->request->getPost("nama");
-        $data->posel    = $this->request->getPost("posel");
-        $data->password = $this->request->getPost("password");
+        $data               = new stdClass();
+        $data->nama         = $this->request->getPost("nama");
+        $data->posel        = $this->request->getPost("posel");
+        $data->password     = $this->request->getPost("password");
+        $data->password2    = $this->request->getPost("password2");
 
         return $data;
     }
