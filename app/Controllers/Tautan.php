@@ -24,26 +24,33 @@ class Tautan extends BaseController
 
         if($this->cek_ganda($data->pendek))
         {
-            $waktu = (new \DateTime('now'))
-                ->setTimezone(new \DateTimeZone('Asia/Jakarta'))
-                ->format('Y-m-d H:i:s');
             $pranala = "https://tekan.id/" . $data->pendek;
 
-            $tautan = new DBTautan();
-            $query1 = $tautan->insert([
-                "panjang" => $data->panjang,
-                "pendek" => $data->pendek,
-                "id_pengguna" => $data->id_pengguna,
-                "waktu" => $waktu,
-            ]);
-
-            return ($query1 !== null) ?
+            return ($this->input_baru($data)) ?
                 redirect()->to(base_url("/"))
                     ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
                 redirect()->to(base_url("/"))
                     ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
         }
         return redirect()->to(base_url("/"))
+            ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
+    }
+
+    public function ringkas_admin()
+    {
+        $data = $this->ambil_form();
+
+        if($this->cek_ganda($data->pendek))
+        {
+            $pranala = "https://tekan.id/" . $data->pendek;
+
+            return ($this->input_baru($data)) ?
+                redirect()->to(base_url("/admin/tautan/dasbor"))
+                    ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
+                redirect()->to(base_url("/admin/tautan/buat"))
+                    ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+        }
+        return redirect()->to(base_url("/admin/tautan/buat"))
             ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
     }
 
@@ -64,5 +71,22 @@ class Tautan extends BaseController
         $data->pendek       = $this->request->getPost("pendek");
 
         return $data;
+    }
+
+    public function input_baru($data): bool
+    {
+        $waktu = (new \DateTime('now'))
+            ->setTimezone(new \DateTimeZone('Asia/Jakarta'))
+            ->format('Y-m-d H:i:s');
+
+        $tautan = new DBTautan();
+        $query1 = $tautan->insert([
+            "panjang" => $data->panjang,
+            "pendek" => $data->pendek,
+            "id_pengguna" => $data->id_pengguna,
+            "waktu" => $waktu,
+        ]);
+
+        return ($query1 !== null);
     }
 }

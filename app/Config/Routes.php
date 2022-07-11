@@ -58,6 +58,8 @@ $routes->group("admin", ["filter" => "auth"], function ($routes)
     $routes->group("tautan", function ($routes)
     {
         $routes->get("dasbor",      "Admin::tautan_dasbor");
+        $routes->get("buat",        "Admin::tautan_buat");
+        $routes->post("buat",       "Tautan::ringkas_admin");
     });
 });
 

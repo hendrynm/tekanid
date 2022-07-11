@@ -31,7 +31,7 @@ Beranda
                     <div class="row">
                         <div class="col-12">
                             <div class="input-group">
-                                <div class="input-group-text fw-bolder">tekan.id/</div>
+                                <div class="input-group-text fw-bolder"><span class="text-black">tekan</span><span style="color:#F90104;">.id</span>/</div>
                                 <input type="text" class="form-control" id="pendek" name="pendek" placeholder="custom-link" required>
                                 <button type="submit" class="btn btn-primary btn-sm">Ringkas</button>
                             </div>

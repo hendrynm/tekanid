@@ -13,27 +13,45 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <span class="text-white">
-                          Docs
+                            <?php
+                            switch((current_url(true)->getSegment(3)))
+                            {
+                                case("beranda"):
+                                    echo "Beranda"; break;
+                                case("tautan"):
+                                    echo "Peringkas Tautan"; break;
+                                case("zoom"):
+                                    echo "Zoom Meeting"; break;
+                            }
+                            ?>
                         </span>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
+                    </li>
+
+                    <li class="breadcrumb-item active" aria-current="page">
                         <span class="text-white">
-                          Alerts
+                            <?php
+                            switch((current_url(true)->getSegment(4)))
+                            {
+                                case("dasbor"):
+                                    echo "Dasbor " . (current_url(true)->getSegment(3)); break;
+                                case("buat"):
+                                    echo "Buat " . (current_url(true)->getSegment(3)); break;
+                                case("beli"):
+                                    echo "Beli Paket"; break;
+                            }
+                            ?>
                         </span>
                     </li>
                 </ol>
-
             </div>
-            <div class="col-auto">
 
-                <!-- Toggler -->
+            <div class="col-auto">
                 <div class="navbar-dark">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidenavCollapse" aria-controls="sidenavCollapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
-
             </div>
-        </div> <!-- / .row -->
-    </div> <!-- / .container -->
+        </div>
+    </div>
 </nav>

@@ -35,7 +35,7 @@
                         </h6>
                         <ul class="list mb-6">
                             <li class="list-item">
-                                <a class="list-link" href="<?= base_url("/admin/tautan/dasbor") ?>">Daftar Tautan</a>
+                                <a class="list-link" href="<?= base_url("/admin/tautan/dasbor") ?>">Dasbor Tautan</a>
                             </li>
                             <li class="list-item d-flex">
                                 <a class="list-link" href="<?= base_url("/admin/tautan/buat") ?>">Buat Tautan Baru</a>
@@ -47,7 +47,7 @@
                         </h6>
                         <ul class="list mb-6">
                             <li class="list-item">
-                                <a class="list-link" href="<?= base_url("/admin/zoom/dasbor") ?>">Daftar Zoom</a>
+                                <a class="list-link" href="<?= base_url("/admin/zoom/dasbor") ?>">Dasbor Zoom</a>
                             </li>
                             <li class="list-item d-flex">
                                 <a class="list-link" href="<?= base_url("/admin/zoom/beli") ?>">Beli Paket</a>
@@ -67,6 +67,15 @@
             </div>
 
             <div class="col-12 col-lg-9 offset-lg-3 offset-xl-2 py-5 py-lg-12">
+                <h1 class="mb-1" id="alerts">
+                    <?= $this->renderSection("judul") ?>
+                </h1>
+
+                <p class="fs-lg text-gray-700">
+                    <?= $this->renderSection("deskripsi") ?>
+                </p>
+
+                <hr class="bg-gray-300 my-6">
 
                 <?= $this->renderSection("konten") ?>
 

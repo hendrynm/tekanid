@@ -22,10 +22,16 @@ class Admin extends BaseController
     {
         $tautan = new DBTautan();
         $query1 = $tautan->where("id_pengguna",$this->id_pengguna())
+            ->orderBy("waktu","desc")
             ->get()
             ->getResult();
 
         return view("admin/tautan/dasbor",["data1" => $query1]);
+    }
+
+    public function tautan_buat()
+    {
+        return view("admin/tautan/buat");
     }
 
     public function id_pengguna(): int
