@@ -2,13 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\DBPengguna;
+use CodeIgniter\HTTP\RedirectResponse;
 use stdClass;
 
 class Auth extends BaseController
 {
-    public function daftar()
+    public function daftar(): RedirectResponse
     {
         $data = $this->ambil_form();
 
@@ -36,7 +36,7 @@ class Auth extends BaseController
             ->with("gagal","Akun <b>" . $data->posel . "</b> sudah pernah didaftarkan. Silakan melakukan login.");
     }
 
-    public function masuk()
+    public function masuk(): RedirectResponse
     {
         $data = $this->ambil_form();
 
@@ -59,7 +59,7 @@ class Auth extends BaseController
             ->with("gagal","Akun <b>" . $data->posel . " </b> belum terdaftar di sistem. Silakan lakukan pendaftaran terlebih dahulu.");
     }
 
-    public function keluar()
+    public function keluar(): RedirectResponse
     {
         $this->buang_sesi();
         return redirect()->to(base_url("/"))

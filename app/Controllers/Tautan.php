@@ -2,13 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\DBTautan;
+use CodeIgniter\HTTP\RedirectResponse;
 use stdClass;
 
 class Tautan extends BaseController
 {
-    public function alih($pendek)
+    public function alih($pendek): RedirectResponse
     {
         $tautan = new DBTautan();
         $query1 = $tautan->select("panjang")
@@ -18,40 +18,59 @@ class Tautan extends BaseController
         return ($query1 !== null) ? redirect()->to($query1->panjang) : view("errors/404");
     }
 
-    public function ringkas()
+    public function dasbor($id_pengguna): array
     {
-        $data = $this->ambil_form();
-
-        if($this->cek_ganda($data->pendek))
-        {
-            $pranala = "https://tekan.id/" . $data->pendek;
-
-            return ($this->input_baru($data)) ?
-                redirect()->to(base_url("/"))
-                    ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
-                redirect()->to(base_url("/"))
-                    ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
-        }
-        return redirect()->to(base_url("/"))
-            ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
+        $tautan = new DBTautan();
+        return $tautan->where("id_pengguna",$id_pengguna)
+            ->orderBy("waktu","desc")
+            ->get()
+            ->getResult();
     }
 
-    public function ringkas_admin()
+    public function ringkas(): RedirectResponse
     {
         $data = $this->ambil_form();
 
-        if($this->cek_ganda($data->pendek))
+        if(!filter_var($data->panjang, FILTER_VALIDATE_URL) === false)
         {
-            $pranala = "https://tekan.id/" . $data->pendek;
+            if($this->cek_ganda($data->pendek))
+            {
+                $pranala = "https://tekan.id/" . $data->pendek;
 
-            return ($this->input_baru($data)) ?
-                redirect()->to(base_url("/admin/tautan/dasbor"))
-                    ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
-                redirect()->to(base_url("/admin/tautan/buat"))
-                    ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+                return ($this->input_baru($data)) ?
+                    redirect()->to(base_url("/"))
+                        ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
+                    redirect()->to(base_url("/"))
+                        ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+            }
+            return redirect()->to(base_url("/"))
+                ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
+        }
+        return redirect()->to(base_url("/"))
+            ->with("gagal","Tautan yang dimasukkan <b>tidak valid</b>. Silakan cek kembali.");
+    }
+
+    public function ringkas_admin(): RedirectResponse
+    {
+        $data = $this->ambil_form();
+
+        if(!filter_var($data->panjang, FILTER_VALIDATE_URL) === false)
+        {
+            if($this->cek_ganda($data->pendek))
+            {
+                $pranala = "https://tekan.id/" . $data->pendek;
+
+                return ($this->input_baru($data)) ?
+                    redirect()->to(base_url("/admin/tautan/dasbor"))
+                        ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
+                    redirect()->to(base_url("/admin/tautan/buat"))
+                        ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+            }
+            return redirect()->to(base_url("/admin/tautan/buat"))
+                ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
         }
         return redirect()->to(base_url("/admin/tautan/buat"))
-            ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
+            ->with("gagal","Tautan yang dimasukkan <b>tidak valid</b>. Silakan cek kembali.");
     }
 
     public function cek_ganda($pendek): bool

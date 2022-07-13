@@ -3,6 +3,11 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
+use App\Controllers\Admin;
+use App\Controllers\Auth;
+use App\Controllers\Beranda;
+use App\Controllers\Tautan;
+
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
@@ -37,29 +42,35 @@ $routes->set404Override(function(){ return view("errors/404"); });
 // route since we don't have to scan directories.
 $routes->group("/", function ($routes)
 {
-    $routes->get("",                "Beranda::index");
-    $routes->get("produk",          "Beranda::produk");
-    $routes->get("biaya",           "Beranda::biaya");
-    $routes->get("testimoni",       "Beranda::testimoni");
-    $routes->get("kontak",          "Beranda::kontak");
+    $routes->get("",                [Beranda::class,"index"]);
+    $routes->get("produk",          [Beranda::class,"produk"]);
+    $routes->get("biaya",           [Beranda::class,"biaya"]);
+    $routes->get("testimoni",       [Beranda::class,"testimoni"]);
+    $routes->get("kontak",          [Beranda::class,"kontak"]);
 
-    $routes->post("daftar",         "Auth::daftar");
-    $routes->post("masuk",          "Auth::masuk");
-    $routes->get("keluar",          "Auth::keluar");
+    $routes->post("daftar",         [Auth::class,"daftar"]);
+    $routes->post("masuk",          [Auth::class,"masuk"]);
+    $routes->get("keluar",          [Auth::class,"keluar"]);
 
-    $routes->post("ringkas",        "Tautan::ringkas");
-    $routes->get("/(:segment)",      "Tautan::alih/$1");
+    $routes->post("ringkas",        [Tautan::class,"ringkas"]);
+    $routes->get("/(:segment)",     [Tautan::class,"alih/$1"]);
 });
 
 $routes->group("admin", ["filter" => "auth"], function ($routes)
 {
-    $routes->get("beranda",         "Admin::beranda");
+    $routes->get("beranda",         [Admin::class,"beranda"]);
 
     $routes->group("tautan", function ($routes)
     {
-        $routes->get("dasbor",      "Admin::tautan_dasbor");
-        $routes->get("buat",        "Admin::tautan_buat");
-        $routes->post("buat",       "Tautan::ringkas_admin");
+        $routes->get("dasbor",      [Admin::class,"tautan_dasbor"]);
+        $routes->get("buat",        [Admin::class,"tautan_buat"]);
+        $routes->post("buat",       [Tautan::class,"ringkas_admin"]);
+    });
+
+    $routes->group("zoom", function ($routes)
+    {
+        $routes->get("dasbor",      [Admin::class,"zoom_dasbor"]);
+
     });
 });
 

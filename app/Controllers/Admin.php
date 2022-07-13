@@ -2,13 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Models\DBPengguna;
-use App\Models\DBTautan;
 
 class Admin extends BaseController
 {
-    public function beranda()
+    public function beranda(): string
     {
         $pengguna = new DBPengguna();
         $query1 = $pengguna->select("nama")
@@ -18,20 +16,21 @@ class Admin extends BaseController
         return view("admin/index",["data1" => $query1]);
     }
 
-    public function tautan_dasbor()
+    public function tautan_dasbor(): string
     {
-        $tautan = new DBTautan();
-        $query1 = $tautan->where("id_pengguna",$this->id_pengguna())
-            ->orderBy("waktu","desc")
-            ->get()
-            ->getResult();
+        $data1 = (new Tautan())->dasbor($this->id_pengguna());
 
-        return view("admin/tautan/dasbor",["data1" => $query1]);
+        return view("admin/tautan/dasbor",["data1" => $data1]);
     }
 
-    public function tautan_buat()
+    public function tautan_buat(): string
     {
         return view("admin/tautan/buat");
+    }
+
+    public function zoom_dasbor(): string
+    {
+        return view("admin/zoom/dasbor");
     }
 
     public function id_pengguna(): int
