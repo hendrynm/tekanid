@@ -8,20 +8,12 @@ use stdClass;
 
 class Zoom extends BaseController
 {
-    public function ambil_token(): string
-    {
-        $zoom = new DBZoom();
-        return $zoom->select("token")
-            ->first()
-            ->token;
-    }
-
-    public function update_token(): void
+    public function cek_token(): void
     {
         $zoom = new DBZoom();
         $query1 = $zoom->first();
 
-        $waktu_asli = (new \DateTime('now'))->getTimestamp();
+        $waktu_asli = (int)(new \DateTime('now'))->format("Uv");
         $waktu_db = $query1->time;
         $waktu_expire = $waktu_db + 3600000;
 
@@ -29,13 +21,16 @@ class Zoom extends BaseController
         {
             $client = getenv("ZOOM_CLIENT_ID");
             $secret = getenv("ZOOM_CLIENT_SECRET");
-            $kunci = base64_encode($client . ":" . $secret);
-            $refresh =base64_decode(str_replace(['-','_'], ['+','/'], $query1->refresh));
+
+            $kunci = base64_encode("$client:$secret");
+
+            $refresh = base64_decode(str_replace(['-','_'], ['+','/'], $query1->refresh));
 
             $curl1 = curl_init();
             $opsi1 = [
-                CURLOPT_URL => "https://zoom.us/oauth/token?grant_type=refresh_token&refresh_token='" . $refresh . "'",
+                CURLOPT_URL => "https://zoom.us/oauth/token?grant_type=refresh_token&refresh_token=$refresh",
                 CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_HTTPHEADER => [
                     "Content-Type: application/x-www-form-urlencoded",
                     "Authorization: Basic " . $kunci,
@@ -43,16 +38,25 @@ class Zoom extends BaseController
             ];
             curl_setopt_array($curl1, $opsi1);
             $request1 = curl_exec($curl1);
-            curl_close($curl1);
+
+            var_dump(curl_getinfo($curl1));
+            echo "<br><br>";
+            var_dump(curl_errno($curl1));
+            echo "<br><br>";
+            var_dump(curl_error($curl1));
+            echo "<br><br>";
+            echo $request1;
 
             $baru_token = $request1->access_token;
             $baru_refresh = $request1->refresh_token;
-            $baru_waktu = (new \DateTime('now'))->getTimestamp();
+            $baru_waktu = (int)(new \DateTime('now'))->format("Uv");
+
+            curl_close($curl1);
 
             $query2 = $zoom->where("id",1)
                 ->set([
-                "token" => "'" . $baru_token . "'",
-                "refresh" => "'" . $baru_refresh . "'",
+                "token" => "'@$baru_token'",
+                "refresh" => "'@$baru_refresh'",
                 "time" => $baru_waktu
             ])->update();
         }
@@ -67,7 +71,7 @@ class Zoom extends BaseController
             catch (JsonException $e) { }
         }
 
-        $this->update_token();
+        //$this->cek_token();
 
         $data1 = [
             "topic" => $data->topik,
@@ -85,26 +89,75 @@ class Zoom extends BaseController
                 "waiting_room" => true,
             ],
         ];
-        $opsi1 = [
-            CURLOPT_URL => "https://api.zoom.us/v2/users/me/meetings",
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $data1 ,
-            CURLOPT_HTTPHEADER => $this->header(),
-        ];
-        $curl1 = curl_init();
-        curl_setopt_array($curl1,$opsi1);
-        $request1 = curl_exec($curl1);
-        curl_close($curl1);
+        $klien1 = service("curlrequest");
+        $request1 = $klien1->setBody($data1)
+            ->request("post","https://api.zoom.us/v2/users/me/meetings",$this->header());
+
+//        $opsi1 = [
+//            CURLOPT_URL => "https://api.zoom.us/v2/users/me/meetings",
+//            CURLOPT_POST => true,
+//            CURLOPT_POSTFIELDS => $data1 ,
+//            CURLOPT_HTTPHEADER => $this->header(),
+//        ];
+//        $curl1 = curl_init();
+//        curl_setopt_array($curl1,$opsi1);
+//        $request1 = curl_exec($curl1);
+//        curl_close($curl1);
 
         return $request1;
+    }
+
+    public function cek_jadwal(): \JsonSerializable
+    {
+        // $this->cek_token();
+
+        $klien1 = service("curlrequest");
+        $request1 = $klien1->request("get","https://api.zoom.us/v2/users/me/meetings?type=upcoming",$this->header());
+        $respon1 = $request1->getBody();
+        $hasil1 = json_decode($respon1, false);
+
+        $data = Array();
+        foreach($hasil1->meetings as $h1)
+        {
+            if($h1->type === 2 || $h1->type === 8)
+            {
+                $id = $h1->id;
+                $topik = $h1->topic;
+                $tanggal = strftime("%d %B %Y",strtotime($h1->start_time));
+                $durasi = $h1->duration;
+                $pembuat = $h1->agenda;
+                $tipe = $h1->type;
+                $waktu_mulai = (new \DateTime($h1->start_time))
+                    ->setTimezone(new \DateTimeZone("Asia/Jakarta"))
+                    ->format("H:i");
+                $waktu_selesai = (new \DateTime($h1->start_time))
+                    ->setTimezone(new \DateTimeZone("Asia/Jakarta"))
+                    ->modify("+$durasi minutes")
+                    ->format("H:i");
+            }
+        }
+
+        return "";
     }
 
     public function header(): array
     {
         return [
-            "Content-Type: application/json; charset=UTF-8",
-            "Authorization: Bearer " . $this->ambil_token(),
+            "headers" => [
+                "Content-Type" => "application/json; charset=UTF-8",
+                "Authorization" => "Bearer " . $this->ambil_token(),
+                ],
+            "verify" => false,
         ];
+    }
+
+    public function ambil_token(): string
+    {
+        $zoom = new DBZoom();
+        $query1 =  $zoom->select("token")
+            ->first()
+            ->token;
+        return base64_decode(str_replace(['-','_'], ['+','/'], $query1));
     }
 
     public function ambil_form(): object

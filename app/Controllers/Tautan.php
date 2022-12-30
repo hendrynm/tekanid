@@ -4,14 +4,22 @@ namespace App\Controllers;
 
 use App\Models\DBTautan;
 use CodeIgniter\HTTP\RedirectResponse;
+use DateTime;
+use DateTimeZone;
 use stdClass;
 
 class Tautan extends BaseController
 {
-    public function alih($pendek): RedirectResponse
+    public DBTautan $tautan;
+
+    public function __construct()
     {
-        $tautan = new DBTautan();
-        $query1 = $tautan->select("panjang")
+        $this->tautan = new DBTautan();
+    }
+
+    public function alih($pendek)
+    {
+        $query1 = $this->tautan->select("panjang")
             ->where("pendek",$pendek)
             ->first();
 
@@ -20,8 +28,7 @@ class Tautan extends BaseController
 
     public function dasbor($id_pengguna): array
     {
-        $tautan = new DBTautan();
-        return $tautan->where("id_pengguna",$id_pengguna)
+        return $this->tautan->where("id_pengguna",$id_pengguna)
             ->orderBy("waktu","desc")
             ->get()
             ->getResult();
@@ -37,11 +44,16 @@ class Tautan extends BaseController
             {
                 $pranala = "https://tekan.id/" . $data->pendek;
 
-                return ($this->input_baru($data)) ?
-                    redirect()->to(base_url("/"))
-                        ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
-                    redirect()->to(base_url("/"))
-                        ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+                if($this->cek_valid($pranala))
+                {
+                    return ($this->input_baru($data)) ?
+                        redirect()->to(base_url("/"))
+                            ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
+                        redirect()->to(base_url("/"))
+                            ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+                }
+                return redirect()->to(base_url("/"))
+                    ->with("gagal","Tautan pendek tidak valid. Coba gunakan tautan pendek lain.");
             }
             return redirect()->to(base_url("/"))
                 ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
@@ -60,11 +72,16 @@ class Tautan extends BaseController
             {
                 $pranala = "https://tekan.id/" . $data->pendek;
 
-                return ($this->input_baru($data)) ?
-                    redirect()->to(base_url("/admin/tautan/dasbor"))
-                        ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
-                    redirect()->to(base_url("/admin/tautan/buat"))
-                        ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+                if($this->cek_valid($pranala))
+                {
+                    return ($this->input_baru($data)) ?
+                        redirect()->to(base_url("/admin/tautan/dasbor"))
+                            ->with("sukses","Tautan sudah disingkat menjadi <b><a href='" . $pranala . "' target='_blank'>" . $pranala . "</a></b>") :
+                        redirect()->to(base_url("/admin/tautan/buat"))
+                            ->with("gagal","Tautan <b>gagal disimpan</b> ke penyimpanan data internet. Silakan coba lagi.");
+                }
+                return redirect()->to(base_url("/admin/tautan/buat"))
+                    ->with("gagal","Tautan pendek tidak valid. Coba gunakan tautan pendek lain.");
             }
             return redirect()->to(base_url("/admin/tautan/buat"))
                 ->with("gagal","Tautan singkat <b>sudah digunakan orang lain</b>. Silakan coba tautan lainnya.");
@@ -75,8 +92,7 @@ class Tautan extends BaseController
 
     public function cek_ganda($pendek): bool
     {
-        $tautan = new DBTautan();
-        $query1 = $tautan->where("pendek",$pendek)
+        $query1 = $this->tautan->where("pendek",$pendek)
             ->countAllResults();
 
         return ($query1 === 0);
@@ -94,12 +110,12 @@ class Tautan extends BaseController
 
     public function input_baru($data): bool
     {
-        $waktu = (new \DateTime('now'))
-            ->setTimezone(new \DateTimeZone('Asia/Jakarta'))
+        $waktu = (new DateTime('now'))
+            ->setTimezone(new DateTimeZone('Asia/Jakarta'))
             ->format('Y-m-d H:i:s');
 
-        $tautan = new DBTautan();
-        $query1 = $tautan->insert([
+        $query1 = $this->tautan->insert
+        ([
             "panjang" => $data->panjang,
             "pendek" => $data->pendek,
             "id_pengguna" => $data->id_pengguna,
@@ -107,5 +123,10 @@ class Tautan extends BaseController
         ]);
 
         return ($query1 !== null);
+    }
+
+    public function cek_valid($data): bool
+    {
+        return preg_match('%^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\x{00a1}-\x{ffff}][a-z0-9\x{00a1}-\x{ffff}_-]{0,62})?[a-z0-9\x{00a1}-\x{ffff}]\.)+(?:[a-z\x{00a1}-\x{ffff}]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$%iuS',$data);
     }
 }

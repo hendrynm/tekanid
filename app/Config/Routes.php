@@ -7,6 +7,7 @@ use App\Controllers\Admin;
 use App\Controllers\Auth;
 use App\Controllers\Beranda;
 use App\Controllers\Tautan;
+use App\Controllers\Zoom;
 
 $routes = Services::routes();
 
@@ -53,7 +54,7 @@ $routes->group("/", function ($routes)
     $routes->get("keluar",          [Auth::class,"keluar"]);
 
     $routes->post("ringkas",        [Tautan::class,"ringkas"]);
-    $routes->get("/(:segment)",     [Tautan::class,"alih/$1"]);
+    $routes->get("/(:segment)",     [Tautan::class,"alih"]);
 });
 
 $routes->group("admin", ["filter" => "auth"], function ($routes)
@@ -71,6 +72,7 @@ $routes->group("admin", ["filter" => "auth"], function ($routes)
     {
         $routes->get("dasbor",      [Admin::class,"zoom_dasbor"]);
 
+        $routes->get("coba",        [Zoom::class,"jadwal"]);
     });
 });
 
