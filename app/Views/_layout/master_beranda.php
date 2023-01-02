@@ -46,7 +46,7 @@
                     <p class="text-gray-700 mb-2 fw-bold">Cukup tekan di sini aja!</p>
 
                     <p class="text-gray-600 mb-10 mb-lg-0" style="font-size:12px;">
-                        Copyright (c) 2022 by TekanID <br>
+                        Copyright (c) 2022 - <?= date("Y") ?> by TekanID <br>
                         <a href="http://www.freepik.com" class="text-reset" style="font-size:12px;">
                             Ilustration by <b>Freepik</b>
                         </a>
